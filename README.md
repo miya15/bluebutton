@@ -18,6 +18,8 @@ keyup=echo UP
 keydown=echo down; echo DOWN
 longup=echo LONG UP
 longdown=echo LONG DOWN
+pushandroid=echo PUSH android
+pushios=echo PUSH ios
 ```
 
 ```shell

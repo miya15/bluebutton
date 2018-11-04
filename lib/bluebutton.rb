@@ -7,6 +7,8 @@ class Bluebutton
   attr_accessor :on_keyup
   attr_accessor :on_longdown
   attr_accessor :on_longup
+  attr_accessor :on_pushandroid
+  attr_accessor :on_pushios
   attr_accessor :device
 
   def initialize name
@@ -26,6 +28,7 @@ class Bluebutton
   end
 
   def run
+    hasEnter = 0
     File.open(@device, 'rb' ) do |input|
       @on_connected.call if @on_connected
       DeviceInput.read_loop(input) do |event|
@@ -33,8 +36,19 @@ class Bluebutton
           #puts event
           if event.value > 0
             key_down event
+            if event.code == 'Enter'
+              hasEnter = 1
+            end
           else
             key_up event
+            if hasEnter == 1
+              if event.code == 'Enter'
+                @on_pushandroid.call if @on_pushandroid
+                hasEnter = 0
+              end
+            else
+              @on_pushios.call if @on_pushios
+            end
           end
         end
       end
